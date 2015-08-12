@@ -28,9 +28,9 @@ The following **optional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://gifmaker.cc/PlayGIFAnimation.php?folder=2015081205uerRT9bJig9zeXqHTv92w5&file=output_S95v67.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='http://imgur.com/Greqcr1' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
-GIF created with gifmaker.me.
+GIF created with [LiceCap](http://www.cockos.com/licecap/)..
 
 ## Notes
 
