@@ -24,13 +24,6 @@ The following **optional** features are implemented:
 * [N] Tweak the style improving the UI / UX, play with colors, images or backgrounds
 
 
-## Video Walkthrough 
-
-Here's a walkthrough of implemented user stories:
-
-<img src='http://imgur.com/Greqcr1' title='Video Walkthrough' width='' alt='Video Walkthrough' />
-
-GIF created with [LiceCap](http://www.cockos.com/licecap/)..
 
 ## Notes
 
