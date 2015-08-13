@@ -33,6 +33,7 @@ public class MainActivity extends ActionBarActivity {
     ArrayList<String> items ;
     ArrayAdapter<String> itemsAdapter;
     ListView lvItems;
+    private final int REQUEST_CODE = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,20 +45,6 @@ public class MainActivity extends ActionBarActivity {
         itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
         lvItems.setAdapter(itemsAdapter);
         setupListViewListener();
-
-        Intent intent =  getIntent();
-
-        if  (null != intent){
-            String savedItem = intent.getStringExtra("KEY_EDITITEM");
-            if(savedItem != null) {
-                int pos = intent.getIntExtra("KEY_POS", 0);
-                items.remove(pos);
-                items.add(pos,savedItem);
-                itemsAdapter.notifyDataSetChanged();
-                writeItems();
-            }
-
-        }
 
     }
 
@@ -84,7 +71,7 @@ public class MainActivity extends ActionBarActivity {
                         Intent launchEditScreen = new Intent(MainActivity.this, EditActivity.class);
                         launchEditScreen.putExtra("KEY_POS",position);
                         launchEditScreen.putExtra("KEY_EDITITEM",items.get(position).toString());
-                        startActivity(launchEditScreen);
+                        startActivityForResult(launchEditScreen,REQUEST_CODE);
                     }
                 }
 
@@ -142,6 +129,18 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == RESULT_OK && requestCode == REQUEST_CODE){
+            String savedItem = data.getStringExtra("KEY_EDITITEM");
+            int pos = data.getIntExtra("KEY_POS", 0);
+            items.remove(pos);
+            items.add(pos,savedItem);
+            itemsAdapter.notifyDataSetChanged();
+            writeItems();
+        }
     }
 
 }

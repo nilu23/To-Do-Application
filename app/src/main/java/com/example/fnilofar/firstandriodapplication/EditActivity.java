@@ -33,17 +33,16 @@ public class EditActivity extends ActionBarActivity {
             editText = (EditText) findViewById(R.id.editText);
             editText.setText(edititem);
             editText.setSelection(editText.getText().length());
-
         }
     }
 
     public void onSaveItem(View v) {
 
-        Intent homeScreen = new Intent(EditActivity.this, MainActivity.class);
+        Intent homeScreen = new Intent();
         homeScreen.putExtra("KEY_EDITITEM",editText.getText().toString());
         homeScreen.putExtra("KEY_POS", pos);
-
-        startActivity(homeScreen);
+        setResult(RESULT_OK,homeScreen);
+        finish();
     }
 
     @Override
