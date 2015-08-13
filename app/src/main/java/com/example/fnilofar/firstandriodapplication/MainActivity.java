@@ -1,5 +1,6 @@
 package com.example.fnilofar.firstandriodapplication;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.opengl.EGLExt;
@@ -38,12 +39,26 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         lvItems = (ListView) findViewById(R.id.lvItems);
-
         readItems();
 
         itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
         lvItems.setAdapter(itemsAdapter);
         setupListViewListener();
+
+        Intent intent =  getIntent();
+
+        if  (null != intent){
+            String savedItem = intent.getStringExtra("KEY_EDITITEM");
+            if(savedItem != null) {
+                int pos = intent.getIntExtra("KEY_POS", 0);
+                items.remove(pos);
+                items.add(pos,savedItem);
+                itemsAdapter.notifyDataSetChanged();
+                writeItems();
+            }
+
+        }
+
     }
 
     private void setupListViewListener() {
@@ -65,11 +80,11 @@ public class MainActivity extends ActionBarActivity {
                 new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        EditText etNewItem = (EditText) findViewById(R.id.etNewItem);
-                        etNewItem.setText(items.get(position).toString());
-                        items.remove(position);
-                        itemsAdapter.notifyDataSetChanged();
-                        writeItems();
+
+                        Intent launchEditScreen = new Intent(MainActivity.this, EditActivity.class);
+                        launchEditScreen.putExtra("KEY_POS",position);
+                        launchEditScreen.putExtra("KEY_EDITITEM",items.get(position).toString());
+                        startActivity(launchEditScreen);
                     }
                 }
 
