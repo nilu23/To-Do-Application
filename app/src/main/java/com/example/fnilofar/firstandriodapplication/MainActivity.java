@@ -26,29 +26,37 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
 
-    ArrayList<String> items ;
-    ArrayAdapter<String> itemsAdapter;
+    ArrayList<Items> items ;
+    ArrayAdapter<Items> itemsAdapter;
     ListView lvItems;
     private final int REQUEST_CODE = 5;
+
+    // Get singleton instance of database
+    TodoDatabase databaseHelper ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         lvItems = (ListView) findViewById(R.id.lvItems);
-        readItems();
 
-        itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
+        readItemsFromDB();
+
+        itemsAdapter = new ArrayAdapter<Items>(this, android.R.layout.simple_list_item_1, items);
         lvItems.setAdapter(itemsAdapter);
         setupListViewListener();
 
     }
 
     private void setupListViewListener() {
+
+        databaseHelper = TodoDatabase.getsInstance(this);
+
         lvItems.setOnItemLongClickListener(
                 new AdapterView.OnItemLongClickListener() {
 
@@ -56,7 +64,8 @@ public class MainActivity extends ActionBarActivity {
                     public boolean onItemLongClick(AdapterView<?> adapter, View item, int pos, long id) {
                         items.remove(pos);
                         itemsAdapter.notifyDataSetChanged();
-                        writeItems();
+                        databaseHelper.deleteItem(pos+1);
+
                         return true;
                     }
                 }
@@ -70,7 +79,7 @@ public class MainActivity extends ActionBarActivity {
 
                         Intent launchEditScreen = new Intent(MainActivity.this, EditActivity.class);
                         launchEditScreen.putExtra("KEY_POS",position);
-                        launchEditScreen.putExtra("KEY_EDITITEM",items.get(position).toString());
+                        launchEditScreen.putExtra("KEY_EDITITEM",items.get(position));
                         startActivityForResult(launchEditScreen,REQUEST_CODE);
                     }
                 }
@@ -80,33 +89,32 @@ public class MainActivity extends ActionBarActivity {
     public void onAddItem(View v) {
         EditText etNewItem = (EditText) findViewById(R.id.etNewItem);
         String itemText = etNewItem.getText().toString();
-        itemsAdapter.add(itemText);
+        Items newItem = new Items();
+        newItem.text = itemText;
+
+        itemsAdapter.add(newItem);
         etNewItem.setText("");
-        writeItems();
+
+        addItemToDB(newItem);
     }
 
 
-    private  void readItems() {
+    private  void readItemsFromDB() {
 
-        File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo.txt");
-        try{
-            items = new ArrayList<String>(FileUtils.readLines(todoFile));
-        }catch (IOException e){
-            items =  new ArrayList<String>();
-        }
+        databaseHelper = TodoDatabase.getsInstance(this);
+
+        // Get all items from database
+        items = (ArrayList) databaseHelper.getAllItems();
 
     }
 
-    private void writeItems() {
+    private void addItemToDB(Items item) {
 
-        File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo.txt");
-        try{
-            FileUtils.writeLines(todoFile, items);
-        }catch (IOException e){
-            e.printStackTrace();
-        }
+       databaseHelper = TodoDatabase.getsInstance(this);
+
+        // Add an item to database
+        databaseHelper.addItem(item);
+
     }
 
     @Override
@@ -133,13 +141,16 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        databaseHelper = TodoDatabase.getsInstance(this);
+
         if(resultCode == RESULT_OK && requestCode == REQUEST_CODE){
-            String savedItem = data.getStringExtra("KEY_EDITITEM");
+            Items savedItem = (Items) data.getSerializableExtra("KEY_EDITITEM");
             int pos = data.getIntExtra("KEY_POS", 0);
             items.remove(pos);
             items.add(pos,savedItem);
             itemsAdapter.notifyDataSetChanged();
-            writeItems();
+            databaseHelper.updateItem(savedItem, pos+1);
         }
     }
 

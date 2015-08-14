@@ -15,23 +15,23 @@ import android.widget.EditText;
 public class EditActivity extends ActionBarActivity {
 
     EditText editText ;
-    Button savebtn ;
+    Button saveBtn ;
     int pos;
+    Items editItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
 
-        savebtn = (Button)findViewById(R.id.savebtn);
-        String edititem = "";
+        saveBtn = (Button)findViewById(R.id.savebtn);
 
         Intent intent =  getIntent();
         if  (null != intent){
-            edititem = intent.getStringExtra("KEY_EDITITEM");
+            editItem = (Items) intent.getSerializableExtra("KEY_EDITITEM");
             pos = intent.getIntExtra("KEY_POS", 0);
             editText = (EditText) findViewById(R.id.editText);
-            editText.setText(edititem);
+            editText.setText(editItem.text);
             editText.setSelection(editText.getText().length());
         }
     }
@@ -39,7 +39,8 @@ public class EditActivity extends ActionBarActivity {
     public void onSaveItem(View v) {
 
         Intent homeScreen = new Intent();
-        homeScreen.putExtra("KEY_EDITITEM",editText.getText().toString());
+        editItem.text = editText.getText().toString();
+        homeScreen.putExtra("KEY_EDITITEM", editItem);
         homeScreen.putExtra("KEY_POS", pos);
         setResult(RESULT_OK,homeScreen);
         finish();
