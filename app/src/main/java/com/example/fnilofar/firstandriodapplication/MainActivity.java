@@ -27,14 +27,17 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 public class MainActivity extends ActionBarActivity {
 
     ArrayList<Items> items ;
-    ArrayAdapter<Items> itemsAdapter;
+    //ArrayAdapter<Items> itemsAdapter;
+    ItemsAdapter itemsAdapter;
     ListView lvItems;
-    private final int REQUEST_CODE = 5;
+    private final int EDIT_REQUEST_CODE = 5;
+    private final int ADD_REQUEST_CODE = 1;
 
     // Get singleton instance of database
     TodoDatabase databaseHelper ;
@@ -45,9 +48,13 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         lvItems = (ListView) findViewById(R.id.lvItems);
 
+        databaseHelper = TodoDatabase.getsInstance(this);
+
+        //databaseHelper.deleteAllItems();
         readItemsFromDB();
 
-        itemsAdapter = new ArrayAdapter<Items>(this, android.R.layout.simple_list_item_1, items);
+        itemsAdapter = new ItemsAdapter(this, items);
+        //itemsAdapter = new ArrayAdapter<Items>(this, android.R.layout.simple_list_item_1, items);
         lvItems.setAdapter(itemsAdapter);
         setupListViewListener();
 
@@ -62,9 +69,9 @@ public class MainActivity extends ActionBarActivity {
 
                     @Override
                     public boolean onItemLongClick(AdapterView<?> adapter, View item, int pos, long id) {
+                        databaseHelper.deleteItem(items.get(pos));
                         items.remove(pos);
                         itemsAdapter.notifyDataSetChanged();
-                        databaseHelper.deleteItem(pos+1);
 
                         return true;
                     }
@@ -78,24 +85,19 @@ public class MainActivity extends ActionBarActivity {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                         Intent launchEditScreen = new Intent(MainActivity.this, EditActivity.class);
-                        launchEditScreen.putExtra("KEY_POS",position);
-                        launchEditScreen.putExtra("KEY_EDITITEM",items.get(position));
-                        startActivityForResult(launchEditScreen,REQUEST_CODE);
+                        launchEditScreen.putExtra("KEY_POS", position);
+                        launchEditScreen.putExtra("KEY_EDITITEM", items.get(position));
+                        startActivityForResult(launchEditScreen, EDIT_REQUEST_CODE);
                     }
                 }
 
         );
     }
     public void onAddItem(View v) {
-        EditText etNewItem = (EditText) findViewById(R.id.etNewItem);
-        String itemText = etNewItem.getText().toString();
-        Items newItem = new Items();
-        newItem.text = itemText;
 
-        itemsAdapter.add(newItem);
-        etNewItem.setText("");
+        Intent launchAddScreen = new Intent(MainActivity.this, AddActivity.class);
+        startActivityForResult(launchAddScreen, ADD_REQUEST_CODE);
 
-        addItemToDB(newItem);
     }
 
 
@@ -144,13 +146,20 @@ public class MainActivity extends ActionBarActivity {
 
         databaseHelper = TodoDatabase.getsInstance(this);
 
-        if(resultCode == RESULT_OK && requestCode == REQUEST_CODE){
+        if(resultCode == RESULT_OK && requestCode == EDIT_REQUEST_CODE){
             Items savedItem = (Items) data.getSerializableExtra("KEY_EDITITEM");
             int pos = data.getIntExtra("KEY_POS", 0);
+            databaseHelper.updateItem(savedItem, items.get(pos));
             items.remove(pos);
-            items.add(pos,savedItem);
+            items.add(pos, savedItem);
             itemsAdapter.notifyDataSetChanged();
-            databaseHelper.updateItem(savedItem, pos+1);
+        }
+
+        if(resultCode == RESULT_OK && requestCode == ADD_REQUEST_CODE){
+            Items savedItem = (Items) data.getSerializableExtra("KEY_ADDITEM");
+            databaseHelper.addItem(savedItem);
+            items.add(savedItem);
+            itemsAdapter.notifyDataSetChanged();
         }
     }
 

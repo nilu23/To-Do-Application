@@ -28,7 +28,9 @@ public class TodoDatabase extends SQLiteOpenHelper {
 
     // Items Table Columns
     private static final String KEY_ITEM_ID = "id";
+    private static final String KEY_ITEM_ID_FK = "itemId";
     private static final String KEY_ITEM_TEXT = "text";
+    private static final String KEY_ITEM_DUE_DATE = "dueDate";
 
 
     public static synchronized TodoDatabase getsInstance(Context context){
@@ -56,10 +58,14 @@ public class TodoDatabase extends SQLiteOpenHelper {
     // If a database already exists on disk with the same DATABASE_NAME, this method will NOT be called.
     @Override
     public void onCreate(SQLiteDatabase db) {
+
+
         String CREATE_ITEMS_TABLE = "CREATE TABLE " + TABLE_ITEMS +
                 "(" +
                 KEY_ITEM_ID + " INTEGER PRIMARY KEY," + // Define a primary key
-                KEY_ITEM_TEXT + " TEXT" +
+                KEY_ITEM_ID_FK + " INTEGER," + // Define a foreign key
+                KEY_ITEM_TEXT + " TEXT," +
+                KEY_ITEM_DUE_DATE + " TEXT " +
                 ")";
         db.execSQL(CREATE_ITEMS_TABLE);
 
@@ -90,7 +96,9 @@ public class TodoDatabase extends SQLiteOpenHelper {
         try {
 
             ContentValues values = new ContentValues();
+            values.put(KEY_ITEM_ID_FK, item.id);
             values.put(KEY_ITEM_TEXT, item.text);
+            values.put(KEY_ITEM_DUE_DATE, item.dueDate);
 
             db.insertOrThrow(TABLE_ITEMS, null, values);
             db.setTransactionSuccessful();
@@ -119,8 +127,11 @@ public class TodoDatabase extends SQLiteOpenHelper {
             if (cursor.moveToFirst()) {
                 do {
                     Items newItem = new Items();
+                    newItem.id = cursor.getInt(cursor.getColumnIndex(KEY_ITEM_ID_FK));
                     newItem.text = cursor.getString(cursor.getColumnIndex(KEY_ITEM_TEXT));
+                    newItem.dueDate = cursor.getString(cursor.getColumnIndex(KEY_ITEM_DUE_DATE));
                     itemsArrayList.add(newItem);
+
                 } while(cursor.moveToNext());
             }
         } catch (Exception e) {
@@ -135,23 +146,23 @@ public class TodoDatabase extends SQLiteOpenHelper {
 
 
     // Update the item text
-    public int updateItem(Items item, int id) {
+    public int updateItem(Items item, Items oldItem) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(KEY_ITEM_TEXT, item.text);
 
         // Updating item description
-        return db.update(TABLE_ITEMS, values, KEY_ITEM_ID + " = ?",
-                new String[] { String.valueOf(id) });
+        return db.update(TABLE_ITEMS, values, KEY_ITEM_ID_FK + " = ?",
+                new String[] { String.valueOf(oldItem.id) });
     }
 
-    public void deleteItem(int id) {
+    public void deleteItem(Items item) {
         SQLiteDatabase db = getWritableDatabase();
 
         db.beginTransaction();
         try {
-            db.delete(TABLE_ITEMS, KEY_ITEM_ID + " = ?", new String[] { String.valueOf(id) });
+            db.delete(TABLE_ITEMS, KEY_ITEM_ID_FK + " = ?", new String[]{String.valueOf(item.id)});
             db.setTransactionSuccessful();
         } catch (Exception e) {
             Log.d(this.toString(), "Error while trying to delete item");
