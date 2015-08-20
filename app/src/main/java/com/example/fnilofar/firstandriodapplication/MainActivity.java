@@ -1,13 +1,16 @@
 package com.example.fnilofar.firstandriodapplication;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.opengl.EGLExt;
 import android.provider.Contacts;
 import android.provider.ContactsContract;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.util.Log;
 import android.view.Menu;
@@ -30,7 +33,7 @@ import java.util.List;
 import java.util.Random;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends FragmentActivity implements EditItemDialog.EditItemDialogListener {
 
     ArrayList<Items> items ;
     //ArrayAdapter<Items> itemsAdapter;
@@ -84,10 +87,12 @@ public class MainActivity extends ActionBarActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                        Intent launchEditScreen = new Intent(MainActivity.this, EditActivity.class);
+                        showEditDialog(items.get(position), position);
+
+                       /** Intent launchEditScreen = new Intent(MainActivity.this, EditActivity.class);
                         launchEditScreen.putExtra("KEY_POS", position);
                         launchEditScreen.putExtra("KEY_EDITITEM", items.get(position));
-                        startActivityForResult(launchEditScreen, EDIT_REQUEST_CODE);
+                        startActivityForResult(launchEditScreen, EDIT_REQUEST_CODE); **/
                     }
                 }
 
@@ -116,6 +121,13 @@ public class MainActivity extends ActionBarActivity {
 
         // Add an item to database
         databaseHelper.addItem(item);
+
+    }
+
+    private void showEditDialog(Items editItem, int pos) {
+        android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+        EditItemDialog editNameDialog = EditItemDialog.newInstance("Edit Item", editItem, pos);
+        editNameDialog.show(fm, "fragment_edit_name");
 
     }
 
@@ -163,4 +175,11 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    @Override
+    public void onFinishEditDialog(Items editItem, int pos) {
+        databaseHelper.updateItem(editItem, items.get(pos));
+        items.remove(pos);
+        items.add(pos, editItem);
+        itemsAdapter.notifyDataSetChanged();
+    }
 }

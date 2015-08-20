@@ -23,7 +23,6 @@
         android:layout_height="wrap_content"
         android:text="@string/savebtn"
         android:id="@+id/savebtn"
-        android:onClick="onSaveItem"
         android:layout_below="@+id/editText"
         android:layout_centerHorizontal="true"
         android:textSize="15dp" />

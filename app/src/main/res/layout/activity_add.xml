@@ -4,6 +4,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="#20009688"
     tools:context="com.example.fnilofar.firstandriodapplication.AddActivity">
 
     <EditText
@@ -32,8 +33,9 @@
         android:text="@string/add_item"
         android:id="@+id/btnAddItem"
         android:onClick="onAddItem"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="93dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -68,5 +70,41 @@
         android:layout_toEndOf="@+id/btnAddItem" />
 
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/priorityField"
+        android:id="@+id/priorityField"
+        android:layout_below="@+id/date"
+        android:layout_alignRight="@+id/itemDetails"
+        android:layout_alignEnd="@+id/itemDetails" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/highPriority"
+       android:src="@drawable/reddot"
+        android:layout_alignTop="@+id/mediumPriority"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/mediumPriority"
+        android:src="@drawable/bluedot"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/highPriority"
+        android:layout_toEndOf="@+id/highPriority" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/lowPriority"
+        android:src="@drawable/greendot"
+        android:layout_alignTop="@+id/mediumPriority"
+        android:layout_toRightOf="@+id/mediumPriority"
+        android:layout_toEndOf="@+id/mediumPriority" />
 
 </RelativeLayout>
