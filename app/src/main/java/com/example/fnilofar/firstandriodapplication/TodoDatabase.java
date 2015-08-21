@@ -31,6 +31,8 @@ public class TodoDatabase extends SQLiteOpenHelper {
     private static final String KEY_ITEM_ID_FK = "itemId";
     private static final String KEY_ITEM_TEXT = "text";
     private static final String KEY_ITEM_DUE_DATE = "dueDate";
+    private static final String KEY_ITEM_PRIORITY = "priority";
+
 
 
     public static synchronized TodoDatabase getsInstance(Context context){
@@ -65,7 +67,8 @@ public class TodoDatabase extends SQLiteOpenHelper {
                 KEY_ITEM_ID + " INTEGER PRIMARY KEY," + // Define a primary key
                 KEY_ITEM_ID_FK + " INTEGER," + // Define a foreign key
                 KEY_ITEM_TEXT + " TEXT," +
-                KEY_ITEM_DUE_DATE + " TEXT " +
+                KEY_ITEM_DUE_DATE + " TEXT, " +
+                KEY_ITEM_PRIORITY + " INTEGER" +
                 ")";
         db.execSQL(CREATE_ITEMS_TABLE);
 
@@ -99,6 +102,7 @@ public class TodoDatabase extends SQLiteOpenHelper {
             values.put(KEY_ITEM_ID_FK, item.id);
             values.put(KEY_ITEM_TEXT, item.text);
             values.put(KEY_ITEM_DUE_DATE, item.dueDate);
+            values.put(KEY_ITEM_PRIORITY, item.priority);
 
             db.insertOrThrow(TABLE_ITEMS, null, values);
             db.setTransactionSuccessful();
@@ -130,6 +134,7 @@ public class TodoDatabase extends SQLiteOpenHelper {
                     newItem.id = cursor.getInt(cursor.getColumnIndex(KEY_ITEM_ID_FK));
                     newItem.text = cursor.getString(cursor.getColumnIndex(KEY_ITEM_TEXT));
                     newItem.dueDate = cursor.getString(cursor.getColumnIndex(KEY_ITEM_DUE_DATE));
+                    newItem.priority = cursor.getInt(cursor.getColumnIndex(KEY_ITEM_PRIORITY));
                     itemsArrayList.add(newItem);
 
                 } while(cursor.moveToNext());
@@ -151,6 +156,8 @@ public class TodoDatabase extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(KEY_ITEM_TEXT, item.text);
+        values.put(KEY_ITEM_PRIORITY, item.priority);
+        values.put(KEY_ITEM_DUE_DATE, item.dueDate);
 
         // Updating item description
         return db.update(TABLE_ITEMS, values, KEY_ITEM_ID_FK + " = ?",

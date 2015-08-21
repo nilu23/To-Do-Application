@@ -80,31 +80,43 @@
         android:layout_alignRight="@+id/itemDetails"
         android:layout_alignEnd="@+id/itemDetails" />
 
-    <ImageView
+    <RadioGroup
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/date"
+        android:layout_alignLeft="@+id/btnAddItem"
+        android:layout_alignStart="@+id/btnAddItem">
+
+        <RadioButton
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:id="@+id/highPriority"
        android:src="@drawable/reddot"
-        android:layout_alignTop="@+id/mediumPriority"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:onClick="onClickRed"
+            android:background="#ffff211a" />
 
-    <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:id="@+id/mediumPriority"
-        android:src="@drawable/bluedot"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/highPriority"
-        android:layout_toEndOf="@+id/highPriority" />
+        <RadioButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/mediumPriority"
+            android:src="@drawable/bluedot"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/highPriority"
+            android:layout_toEndOf="@+id/highPriority"
+            android:onClick="onClickBlue"
+            android:background="#ff3a52ff" />
 
-    <ImageView
+        <RadioButton
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:id="@+id/lowPriority"
         android:src="@drawable/greendot"
         android:layout_alignTop="@+id/mediumPriority"
         android:layout_toRightOf="@+id/mediumPriority"
-        android:layout_toEndOf="@+id/mediumPriority" />
+        android:layout_toEndOf="@+id/mediumPriority"
+        android:onClick="onClickGreen"
+            android:background="#ff2fff1e" />
 
+    </RadioGroup>
 </RelativeLayout>

@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Calendar;
@@ -27,6 +28,7 @@ public class AddActivity extends FragmentActivity {
     EditText text_date;
     private DatePicker date_picker;
     private Button button;
+    private int priority;
 
     private int year;
     private int month;
@@ -57,6 +59,11 @@ public class AddActivity extends FragmentActivity {
 
         newItem.text = newEditText.getText().toString();
         newItem.dueDate = text_date.getText().toString();
+
+        //Set Priority
+
+        newItem.priority = priority;
+       
 
         homeScreen.putExtra("KEY_ADDITEM", newItem);
         setResult(RESULT_OK, homeScreen);
@@ -153,5 +160,18 @@ public class AddActivity extends FragmentActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onClickRed(View v){
+        priority = 1;
+
+    }
+
+    public void onClickBlue(View v){
+        priority = 2;
+    }
+
+    public void onClickGreen(View v){
+        priority = 3;
     }
 }

@@ -11,6 +11,7 @@ public class Items implements Serializable {
     public int id;
     public String text;
     public String dueDate;
+    public int priority;
 
 
     @Override

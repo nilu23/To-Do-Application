@@ -8,23 +8,12 @@
     android:onClick="onClick"
     android:background="#20009688">
 
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="509dp"
-        android:layout_marginStart="509dp"
-        android:id="@+id/frameLayout"></FrameLayout>
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/appname"
+        android:id="@+id/appName"
         android:text="@string/app_name"
-        android:textSize="20dp"/>
+        android:textSize="25dp"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -41,11 +30,8 @@
         android:id="@+id/lvItems"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/btnAddItem"
         android:longClickable="false"
-        android:layout_below="@+id/appname" />
-
-
-
+        android:layout_above="@+id/btnAddItem"
+        android:layout_below="@+id/appName" />
 
 </RelativeLayout>

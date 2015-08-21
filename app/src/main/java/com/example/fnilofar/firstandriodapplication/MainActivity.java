@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +55,7 @@ public class MainActivity extends FragmentActivity implements EditItemDialog.Edi
         databaseHelper = TodoDatabase.getsInstance(this);
 
         //databaseHelper.deleteAllItems();
+        //databaseHelper.onUpgrade(databaseHelper.getWritableDatabase(), 1, 2);
         readItemsFromDB();
 
         itemsAdapter = new ItemsAdapter(this, items);
@@ -170,6 +172,8 @@ public class MainActivity extends FragmentActivity implements EditItemDialog.Edi
         if(resultCode == RESULT_OK && requestCode == ADD_REQUEST_CODE){
             Items savedItem = (Items) data.getSerializableExtra("KEY_ADDITEM");
             databaseHelper.addItem(savedItem);
+
+
             items.add(savedItem);
             itemsAdapter.notifyDataSetChanged();
         }

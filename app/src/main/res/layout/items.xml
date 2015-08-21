@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Item Details"
-        android:textSize="15dp"
+        android:textSize="20dp"
         android:layout_alignParentTop="true" />
 
     <TextView
@@ -20,10 +20,19 @@
             android:layout_alignParentRight="true"
             android:text="@string/dueDateList"
             android:textColor="#ffff1c52"
-            android:textSize="10dp"
+            android:textSize="15dp"
             android:layout_weight="0.03"
+            android:paddingLeft="5dp"
         android:layout_gravity="right"
-        android:layout_alignBottom="@+id/itemDesc" />
-    
+        android:layout_alignBottom="@+id/itemDesc"
+        />
+
+    <ImageView
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:paddingRight="0dp"
+        android:id="@+id/priority"
+        android:layout_toLeftOf="@+id/dueDateField"
+        android:layout_alignBottom="@+id/itemDesc"/>
 
 </RelativeLayout>
