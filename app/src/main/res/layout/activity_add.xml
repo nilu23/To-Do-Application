@@ -13,7 +13,7 @@
         android:id="@+id/newItemText"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="54dp"
+        android:layout_marginTop="40dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
@@ -24,6 +24,7 @@
         android:ems="10"
         android:id="@+id/date"
         android:layout_below="@+id/dueDateField"
+        android:paddingTop="20dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -35,7 +36,7 @@
         android:onClick="onAddItem"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="93dp" />
+        android:layout_marginBottom="74dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -52,6 +53,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/dueDate"
         android:id="@+id/dueDateField"
+        android:paddingTop="15dp"
         android:layout_below="@+id/newItemText"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -61,13 +63,13 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Change"
+        android:text="CHANGE"
         android:id="@+id/changeDate"
         android:layout_alignBottom="@+id/date"
         android:layout_alignRight="@+id/newItemText"
         android:layout_alignEnd="@+id/newItemText"
-        android:layout_toRightOf="@+id/btnAddItem"
-        android:layout_toEndOf="@+id/btnAddItem" />
+        android:layout_toEndOf="@+id/date"
+        android:layout_toRightOf="@+id/date" />
 
 
     <TextView
@@ -76,17 +78,18 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/priorityField"
         android:id="@+id/priorityField"
-        android:layout_below="@+id/date"
-        android:layout_alignRight="@+id/itemDetails"
-        android:layout_alignEnd="@+id/itemDetails" />
+        android:paddingRight="20dp"
+        android:layout_marginTop="190dp"
+        />
 
     <RadioGroup
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@+id/date"
-        android:layout_alignLeft="@+id/btnAddItem"
-        android:layout_alignStart="@+id/btnAddItem">
+        android:id="@+id/radioGroup"
+        android:layout_toEndOf="@id/priorityField"
+        android:layout_toRightOf="@id/priorityField"
+        android:layout_marginTop="190dp">
 
         <RadioButton
         android:layout_width="30dp"
@@ -119,4 +122,5 @@
             android:background="#ff2fff1e" />
 
     </RadioGroup>
+
 </RelativeLayout>

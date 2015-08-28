@@ -31,6 +31,8 @@ public class EditItemDialog extends android.support.v4.app.DialogFragment implem
     private Button saveBtn;
     private Items savedItem;
     private int position;
+    private EditText dEditText;
+    private Button changeDate;
 
     /**
     @Override
@@ -61,6 +63,7 @@ public class EditItemDialog extends android.support.v4.app.DialogFragment implem
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         EditItemDialogListener listener = (EditItemDialogListener) getActivity();
         savedItem.text = mEditText.getText().toString();
+        savedItem.dueDate = dEditText.getText().toString();
         listener.onFinishEditDialog(savedItem, position);
         dismiss();
     }
@@ -93,7 +96,9 @@ public class EditItemDialog extends android.support.v4.app.DialogFragment implem
 
         View view = inflater.inflate(R.layout.activity_edit, container);
         mEditText = (EditText) view.findViewById(R.id.editText);
+        dEditText = (EditText) view.findViewById(R.id.dueDate);
         saveBtn = (Button) view.findViewById(R.id.savebtn);
+        changeDate = (Button) view.findViewById(R.id.changeDate);
 
         position = (int) getArguments().getInt("position");
 
@@ -106,23 +111,33 @@ public class EditItemDialog extends android.support.v4.app.DialogFragment implem
         mEditText.setText(savedItem.text);
         mEditText.setSelection(mEditText.getText().length());
 
+        dEditText.setText(savedItem.dueDate);
+
         saveBtn.setOnClickListener(
                 new Button.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         EditItemDialogListener listener = (EditItemDialogListener) getActivity();
                         savedItem.text = mEditText.getText().toString();
+                        savedItem.dueDate = dEditText.getText().toString();
                         listener.onFinishEditDialog(savedItem, position);
                         dismiss();
                     }
                 }
         );
 
+        changeDate.setOnClickListener(
+                new Button.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                }
+        );
         getDialog().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         return view;
     }
-
 
 
 

@@ -30,7 +30,7 @@ public class ItemsAdapter extends ArrayAdapter<Items> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         // Get the data item for this position
-        Items item = getItem(position);
+            Items item = getItem(position);
 
         ViewHolder viewHolder; // view lookup cache stored in tag
 
